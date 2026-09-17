@@ -12,10 +12,19 @@ if (!$query) {
 }
 
 if (mysqli_num_rows($query) > 0) {
+    
     $data = mysqli_fetch_assoc($query);
 
-    //md5 diganti dengan password_verify agar bisa cocok dengan password hash
-    if (password_verify($password, $data['password'])) {
+    if (!isset($data['password'])) {
+        echo "<h3>Kolom password tidak ditemukan.</h3>";
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+        exit();
+    }
+
+    if ($password == $data['password']) {
+    
         $_SESSION['nama'] = $data['nama'];
         $_SESSION['email'] = $data['email'];
         $_SESSION['jurusan'] = $data['jurusan'];
