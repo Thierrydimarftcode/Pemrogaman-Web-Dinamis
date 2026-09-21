@@ -1,8 +1,8 @@
 <?php
 session_start();
-// Cek apakah user sudah login
-if ($_SESSION['status'] != "login") {
+if($_SESSION['status'] != "login"){
     header("location:login.php");
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -14,6 +14,8 @@ if ($_SESSION['status'] != "login") {
     <h2>Selamat Datang, <?php echo $_SESSION['nama']; ?>!</h2>
     <p>Kamu terdaftar di jurusan: <b><?php echo $_SESSION['jurusan']; ?></b></p>
     
-    <a href="logout.php">Logout</a>
+    <!-- Memanggil Menu Navigasi -->
+    <?php include 'menu.php'; ?>
+
 </body>
 </html>
