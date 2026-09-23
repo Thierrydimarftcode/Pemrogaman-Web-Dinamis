@@ -5,9 +5,10 @@ include "koneksi.php";
 $nama = $_POST['nama'];
 $email = $_POST['email'];
 $jurusan = $_POST['jurusan'];
+$password = $_POST['password'];
 
 // Enkripsi password
-$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+$password = md5($password);
 
 $query = "INSERT INTO users (id, nama, email, jurusan, password) VALUES (NULL, '$nama', '$email', '$jurusan', '$password')";
 $proses = mysqli_query($koneksi, $query);
