@@ -4,6 +4,7 @@ include "koneksi.php";
 
 $email = $_POST['email'];
 $password = $_POST['password'];
+$password = md5($password);
 
 $query = mysqli_query($koneksi, "SELECT * FROM users WHERE email='$email'");
 
@@ -14,15 +15,25 @@ if (!$query) {
 if (mysqli_num_rows($query) > 0) {
     $data = mysqli_fetch_assoc($query);
 
-    //md5 diganti dengan password_verify agar bisa cocok dengan password hash
-    if (password_verify($password, $data['password'])) {
-        $_SESSION['nama'] = $data['nama'];
-        $_SESSION['email'] = $data['email'];
-        $_SESSION['jurusan'] = $data['jurusan'];
-        $_SESSION['status'] = "login";
-        
-        header("Location: dashboard.php");
+     // CEK DATA YANG DIBACA DARI DATABASE 
+    if (!isset($data['password'])) { 
+        echo "<h3>Kolom password tidak ditemukan.</h3>"; 
+        echo "<pre>"; 
+        print_r($data); 
+        echo "</pre>"; 
+        exit(); 
+    } 
+ 
+    if ($password == $data['password']) { 
+ 
+        $_SESSION['nama'] = $data['nama']; 
+        $_SESSION['email'] = $data['email']; 
+        $_SESSION['jurusan'] = $data['jurusan']; 
+        $_SESSION['status'] = "login"; 
+ 
+        header("Location: dashboard.php"); 
         exit();
+
     } else {
         echo "Password salah! <a href='login.php'>Kembali</a>";
     }
